@@ -1,0 +1,40 @@
+{
+	"name": "pi-cockpit-tui",
+	"version": "0.1.0",
+	"description": "Unified terminal UI for pi — tab status, footer modes, widgets, theme cycling, task management, and subagent tracking in one hot-reload extension.",
+	"type": "module",
+	"keywords": [
+		"pi-package"
+	],
+	"pi": {
+		"extensions": [
+			"./src/index.ts"
+		]
+	},
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"test": "node --test 'test/*.test.ts'",
+		"prepublishOnly": "npm run typecheck && npm test"
+	},
+	"engines": {
+		"node": ">=22.6"
+	},
+	"peerDependencies": {
+		"@mariozechner/pi-coding-agent": ">=0.73",
+		"@mariozechner/pi-ai": ">=0.73",
+		"@mariozechner/pi-tui": ">=0.73",
+		"@sinclair/typebox": ">=0.34"
+	},
+	"devDependencies": {
+		"typescript": "^5.9.3"
+	},
+	"license": "MIT",
+	"author": "Luciano Goncalves",
+	"files": [
+		"CHANGELOG.md",
+		"LICENSE",
+		"README.md",
+		"package.json",
+		"src"
+	]
+}
