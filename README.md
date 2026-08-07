@@ -1,21 +1,11 @@
 # pi-cockpit-tui
 
-Unified terminal UI extension for [pi](https://github.com/badlogic/pi-mono).
+One terminal UI extension for [pi](https://github.com/badlogic/pi-mono): footers, widgets,
+task tracking and theme switching, all toggleable at runtime from a single `/cockpit` command.
 
-Replaces 9 separate visual extensions with one hot-reload-configurable package:
+> Not affiliated with the unrelated `pi-cockpit` package on npm.
 
-| Feature | What it does |
-|---|---|
-| **tab-status** | Terminal tab title: `:new` / `:running...` / `:✅` / `:⚡` / `:⏰` |
-| **footer: minimal** | 1-line footer — model name + context % bar |
-| **footer: tool-counter** | 2-line footer — model+tokens+cost / cwd+branch+tool tally |
-| **footer: tilldone** | Footer shows task list + progress |
-| **footer: none** | Hides the footer entirely |
-| **tool-counter-widget** | Coloured per-tool call badge row above the editor |
-| **theme-cycler** | Alt+T / Alt+Shift+T cycle themes; `/theme` picker; colour swatch flash |
-| **subagent-widget** | Live status widget per running subagent (`/sub`, `/subcont`, `/subrm`, `/subclear`) |
-| **purpose-gate** | Intent dialog on session start; persistent purpose banner; blocks input until answered (cancel the prompt to disarm) |
-| **tilldone** | Task lifecycle tool + current-task widget + `/tilldone` overlay |
+![pi-cockpit-tui in action](assets/demo.gif)
 
 ## Install
 
@@ -23,22 +13,80 @@ Replaces 9 separate visual extensions with one hot-reload-configurable package:
 pi install npm:pi-cockpit-tui
 ```
 
-## Quick start
+## What you get
 
-```bash
-# Open the settings toggle UI
-/cockpit
+Nine visual features that would otherwise be nine separate extensions, sharing one config
+file and one hot-reloadable settings command.
 
-# One-shot commands
-/cockpit footer minimal
-/cockpit footer tool-counter
-/cockpit toggle tilldone
-/cockpit toggle purpose-gate
+### Footers
+
+Only one footer is active at a time. Switch live with `/cockpit footer <mode>`.
+
+| Mode | Shows |
+|---|---|
+| `minimal` | Model, project, session name, context bar. One line. |
+| `tool-counter` | Model, context bar, tokens, cost, git status, per-tool call tally. Two lines. |
+| `tilldone` | Task list with progress, active and completed tasks. |
+| `none` | Nothing. |
+
+The `tool-counter` footer runs a single `git status --porcelain=v2 --branch` per refresh,
+cached with a 2 second TTL and invalidated whenever a `write`, `edit` or `bash` tool runs.
+It renders branch, ahead and behind, staged, unstaged, untracked, conflicted, stash count,
+last commit age, and any in-progress rebase, merge, cherry-pick, revert or bisect:
+
 ```
+⎇ main ↑3 ↓1 ●5 +2 ?1 ⚑1 …7m  ⚠ rebase
+```
+
+When the terminal is too narrow, detail is dropped by priority. The branch is never dropped.
+
+### Task tracking
+
+A `tilldone` tool the model can call to declare and update its plan, plus a current-task
+widget above the editor and a full-list overlay.
+
+```js
+tilldone({ action: "new-list", text: "Ship v2 API", description: "Auth and limits" })
+tilldone({ action: "add", texts: ["audit auth middleware", "add rate limiting"] })
+tilldone({ action: "toggle", id: 1 })   // idle -> inprogress -> done -> idle
+tilldone({ action: "list" })
+tilldone({ action: "clear" })
+```
+
+`/tilldone` opens the overlay, running it again closes it. Tasks are per session and reset
+when you start a new one.
+
+### Everything else
+
+| Feature | What it does |
+|---|---|
+| `tab-status` | Terminal tab title tracks agent state: `:new`, `:running...`, `:✅`, `:⚡`, `:⏰` |
+| `tool-counter-widget` | Coloured per-tool call badges above the editor |
+| `theme-cycler` | `Alt+T` and `Alt+Shift+T` cycle themes, `/theme` opens a picker, optional swatch flash |
+| `subagent-widget` | Live status widget per background subagent |
+| `purpose-gate` | Asks for a session intent, then pins it as a banner and injects it into the system prompt |
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `/cockpit` | Settings UI |
+| `/cockpit footer <mode>` | Switch footer without opening the UI |
+| `/cockpit toggle <key>` | Flip any boolean setting |
+| `/tilldone` | Open or close the task overlay |
+| `/theme [name]` | Theme picker, or set one directly |
+| `/sub <task>` | Spawn a background subagent |
+| `/subcont <id> <msg>` | Continue a subagent session |
+| `/subrm <id>`, `/subclear` | Remove one or all subagent widgets |
+
+A feature turned off in `/cockpit` still registers its commands, but they tell you they are
+disabled rather than acting.
 
 ## Configuration
 
-Config is read from `.pi/cockpit.json` in the project directory, with `~/.pi/cockpit.json` as a global fallback. Any key omitted falls back to the default.
+Read from `.pi/cockpit.json` in the project, falling back to `~/.pi/cockpit.json`. Any key
+you omit takes its default. Changes made through `/cockpit` are written back to the project
+file and applied immediately, no restart.
 
 ```json
 {
@@ -56,37 +104,17 @@ Config is read from `.pi/cockpit.json` in the project directory, with `~/.pi/coc
 | Key | Type | Default | Description |
 |---|---|---|---|
 | `footerMode` | `"minimal" \| "tool-counter" \| "tilldone" \| "none"` | `"minimal"` | Active footer |
-| `toolCounterWidget` | boolean | `false` | Badge row above editor |
+| `toolCounterWidget` | boolean | `false` | Badge row above the editor |
 | `purposeGate` | boolean | `false` | Intent dialog on session start |
 | `subagentWidget` | boolean | `true` | Per-subagent status widgets |
-| `themeSwatch` | boolean | `true` | Colour swatch flash after theme change |
+| `themeSwatch` | boolean | `true` | Colour swatch flash after a theme change |
 | `tabStatus` | boolean | `true` | Terminal tab title |
-| `tilldone` | boolean | `false` | Task management tool + widget |
-| `themeCycler` | boolean | `true` | Alt+T / Alt+Shift+T shortcuts + `/theme` command |
+| `tilldone` | boolean | `false` | Task tool, widget and overlay |
+| `themeCycler` | boolean | `true` | `Alt+T` shortcuts and `/theme` |
 
-## Subagent commands
-
-| Command | Description |
-|---|---|
-| `/sub <task>` | Spawn a background subagent |
-| `/subcont <id> <message>` | Continue a subagent's session |
-| `/subrm <id>` | Remove subagent widget |
-| `/subclear` | Clear all subagent widgets |
-
-## TillDone tool
-
-```
-tilldone({ action: "new-list", text: "Sprint 3", description: "Auth refactor" })
-tilldone({ action: "add", texts: ["Write tests", "Update docs"] })
-tilldone({ action: "toggle", id: 1 })   // idle → inprogress → done → idle
-tilldone({ action: "list" })
-tilldone({ action: "clear" })
-```
-
-Use `/tilldone` to open a live overlay showing all tasks. Run it again to close.
-
-A feature turned off in `/cockpit` still registers its commands, but they report that
-they are disabled rather than acting.
+Invalid values are ignored rather than rejected, so a typo falls back to the default instead
+of breaking startup. Setting `footerMode: "tilldone"` without `tilldone: true` falls back to
+`minimal`.
 
 ## Development
 
@@ -94,6 +122,20 @@ they are disabled rather than acting.
 npm run typecheck
 npm test
 ```
+
+Tests are plain `node:test`, no framework. They cover the context bar, git porcelain
+parsing, footer truncation, config validation and the task state machine. `npm publish`
+runs both first.
+
+To re-record the demo you need [vhs](https://github.com/charmbracelet/vhs):
+
+```bash
+vhs assets/demo.tape
+```
+
+## Requirements
+
+Node 22.6 or newer, since the extension ships TypeScript sources that pi loads directly.
 
 ## License
 

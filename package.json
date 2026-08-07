@@ -1,10 +1,17 @@
 {
 	"name": "pi-cockpit-tui",
 	"version": "0.1.0",
-	"description": "Unified terminal UI for pi — tab status, footer modes, widgets, theme cycling, task management, and subagent tracking in one hot-reload extension.",
+	"description": "Terminal UI for pi: footers with git status, task tracking, tool counters, subagent widgets and theme cycling in one hot-reloadable extension.",
 	"type": "module",
 	"keywords": [
-		"pi-package"
+		"pi-package",
+		"pi",
+		"pi-extension",
+		"tui",
+		"footer",
+		"statusline",
+		"tasks",
+		"git"
 	],
 	"pi": {
 		"extensions": [
