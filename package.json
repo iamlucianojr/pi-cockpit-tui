@@ -1,6 +1,6 @@
 {
 	"name": "pi-cockpit-tui",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Terminal UI for pi: footers with git status, task tracking, tool counters, subagent widgets and theme cycling in one hot-reloadable extension.",
 	"type": "module",
 	"keywords": [
