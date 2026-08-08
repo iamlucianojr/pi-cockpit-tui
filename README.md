@@ -5,7 +5,7 @@ task tracking and theme switching, all toggleable at runtime from a single `/coc
 
 > Not affiliated with the unrelated `pi-cockpit` package on npm.
 
-![pi-cockpit-tui in action](assets/demo.gif)
+![pi-cockpit-tui in action](https://raw.githubusercontent.com/iamlucianojr/pi-cockpit-tui/main/assets/demo.gif)
 
 ## Install
 
@@ -126,6 +126,8 @@ npm test
 Tests are plain `node:test`, no framework. They cover the context bar, git porcelain
 parsing, footer truncation, config validation and the task state machine. `npm publish`
 runs both first.
+
+Source: [github.com/iamlucianojr/pi-cockpit-tui](https://github.com/iamlucianojr/pi-cockpit-tui)
 
 To re-record the demo you need [vhs](https://github.com/charmbracelet/vhs):
 

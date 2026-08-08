@@ -1,6 +1,6 @@
 {
 	"name": "pi-cockpit-tui",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Terminal UI for pi: footers with git status, task tracking, tool counters, subagent widgets and theme cycling in one hot-reloadable extension.",
 	"type": "module",
 	"keywords": [
@@ -13,6 +13,14 @@
 		"tasks",
 		"git"
 	],
+	"homepage": "https://github.com/iamlucianojr/pi-cockpit-tui#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/iamlucianojr/pi-cockpit-tui.git"
+	},
+	"bugs": {
+		"url": "https://github.com/iamlucianojr/pi-cockpit-tui/issues"
+	},
 	"pi": {
 		"extensions": [
 			"./src/index.ts"

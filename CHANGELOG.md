@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.1.1] - 2026-08-07
+
+### Added
+- README rewritten with a recorded demo, git status legend, command and config tables.
+- Package description and keywords for npm discovery.
+
+## [0.1.0] - 2026-08-07
 
 ### Fixed
 - Minimal footer crashed with `RangeError` when context usage went above 100%. The progress bar is now clamped, matching the tool-counter footer.
