@@ -33,7 +33,7 @@
 		"prepublishOnly": "npm run check"
 	},
 	"engines": {
-		"node": ">=22.6"
+		"node": "24"
 	},
 	"peerDependencies": {
 		"@earendil-works/pi-coding-agent": ">=0.84",
