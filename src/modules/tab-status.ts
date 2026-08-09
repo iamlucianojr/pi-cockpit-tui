@@ -1,4 +1,4 @@
-import type { ExtensionAPI, ExtensionContext, SessionStartEvent } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext, SessionStartEvent } from "@earendil-works/pi-coding-agent";
 import type { CockpitConfig, CockpitModule } from "../types.ts";
 import { basename } from "node:path";
 
