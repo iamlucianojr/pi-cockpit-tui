@@ -1,8 +1,11 @@
-import type { ExtensionContext } from "@mariozechner/pi-coding-agent";
+import type { ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
 export type FooterMode = "none" | "minimal" | "tool-counter" | "tilldone";
+
+/** Canonical footer list, in UI display order. Single source of truth. */
+export const FOOTER_MODES: FooterMode[] = ["minimal", "tool-counter", "tilldone", "none"];
 
 export interface CockpitConfig {
 	/** Footer display mode. Mutually exclusive. Default: "minimal" */
