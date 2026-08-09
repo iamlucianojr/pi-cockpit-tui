@@ -1,9 +1,7 @@
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { DEFAULT_CONFIG, type CockpitConfig, type FooterMode } from "./types.ts";
-
-const FOOTER_MODES: FooterMode[] = ["none", "minimal", "tool-counter", "tilldone"];
+import { DEFAULT_CONFIG, FOOTER_MODES, type CockpitConfig, type FooterMode } from "./types.ts";
 
 export function isFooterMode(v: unknown): v is FooterMode {
 	return typeof v === "string" && FOOTER_MODES.includes(v as FooterMode);

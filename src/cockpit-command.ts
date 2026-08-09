@@ -1,7 +1,5 @@
 import type { ExtensionContext } from "@earendil-works/pi-coding-agent";
-import type { CockpitConfig, FooterMode } from "./types.ts";
-
-const FOOTER_MODES: FooterMode[] = ["minimal", "tool-counter", "tilldone", "none"];
+import { FOOTER_MODES, type CockpitConfig, type FooterMode } from "./types.ts";
 
 /**
  * Show the /cockpit toggle UI.
